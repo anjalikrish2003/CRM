@@ -122,11 +122,15 @@ def _chart_payload(df: pd.DataFrame, question: str) -> dict[str, Any] | None:
 
     cols = list(df.columns)
     numeric_cols = [c for c in cols if pd.api.types.is_numeric_dtype(df[c])]
+    metric_cols = [
+        c for c in numeric_cols
+        if not c.lower().endswith("_id") and c.lower() not in {"id"}
+    ]
     categorical_cols = [c for c in cols if c not in numeric_cols and not pd.api.types.is_numeric_dtype(df[c])]
 
-    if len(df.columns) >= 2 and numeric_cols:
-        x_key = categorical_cols[0] if categorical_cols else cols[0]
-        y_key = numeric_cols[0]
+    if categorical_cols and metric_cols:
+        x_key = categorical_cols[0]
+        y_key = metric_cols[0]
         if "date" in x_key.lower() or "created" in x_key.lower() or "order_date" in x_key.lower():
             return {
                 "type": "line",
@@ -154,8 +158,8 @@ def _chart_payload(df: pd.DataFrame, question: str) -> dict[str, Any] | None:
             "y_values": df[y_key].round(2).tolist(),
         }
 
-    if len(numeric_cols) >= 2:
-        x_key, y_key = numeric_cols[0], numeric_cols[1]
+    if len(metric_cols) >= 2:
+        x_key, y_key = metric_cols[0], metric_cols[1]
         return {
             "type": "scatter",
             "title": question,

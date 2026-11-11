@@ -499,6 +499,12 @@ body {
   line-height: 1.55;
 }
 
+.msg-row.ai .wide-bubble {
+  width: min(95%, 960px);
+  max-width: min(95%, 960px);
+  min-width: 0;
+}
+
 .msg-row.user .msg-bubble {
   background: linear-gradient(135deg, var(--primary-strong), var(--primary));
   color: #f9fbff;
@@ -521,11 +527,24 @@ body {
 }
 
 .chart-box {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 400px;
+  min-height: 400px;
   margin-top: 14px;
   border-radius: 16px;
   background: rgba(10, 15, 25, 0.7);
   border: 1px solid var(--border);
   padding: 10px;
+  overflow: hidden;
+}
+
+.chart-box .js-plotly-plot,
+.chart-box .plot-container,
+.chart-box .svg-container {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .table-wrap {

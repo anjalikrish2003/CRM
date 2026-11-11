@@ -77,11 +77,11 @@ function setDbSummary(data) {
   `;
 }
 
-function addMessage(role, html) {
+function addMessage(role, html, hasChart = false) {
   const row = document.createElement('div');
   row.className = `msg-row ${role}`;
   const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
+  bubble.className = hasChart ? 'msg-bubble wide-bubble' : 'msg-bubble';
   bubble.innerHTML = html;
   row.appendChild(bubble);
   chatMessages.appendChild(row);
@@ -130,10 +130,11 @@ function renderChart(chart) {
   if (!chart || !chart.type || !window.Plotly) return '';
 
   const id = `chart-${Date.now()}-${chartCounter++}`;
+  const isHorizontal = chart.type === 'horizontalBar';
   const trace = {
     type: chart.type === 'pie' ? 'pie' : chart.type === 'line' || chart.type === 'scatter' ? 'scatter' : 'bar',
-    x: chart.x_values || [],
-    y: chart.y_values || [],
+    x: isHorizontal ? (chart.y_values || []) : (chart.x_values || []),
+    y: isHorizontal ? (chart.x_values || []) : (chart.y_values || []),
     mode: chart.type === 'line' ? 'lines+markers' : 'markers',
     orientation: chart.type === 'horizontalBar' ? 'h' : undefined,
     textposition: 'auto',
@@ -153,14 +154,14 @@ function renderChart(chart) {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     font: { color: '#e7ecff' },
-    margin: { l: 50, r: 20, t: 48, b: 55 },
-    xaxis: { title: chart.x_key || '', automargin: true },
-    yaxis: { title: chart.y_key || '', automargin: true }
+    margin: { l: 70, r: 24, t: 60, b: 90 },
+    xaxis: {
+      title: isHorizontal ? (chart.y_key || '') : (chart.x_key || ''),
+      automargin: true,
+      tickangle: chart.type === 'bar' ? -20 : 0
+    },
+    yaxis: { title: isHorizontal ? (chart.x_key || '') : (chart.y_key || ''), automargin: true }
   };
-  if (chart.type === 'horizontalBar') {
-    layout.xaxis.title = chart.y_key || '';
-    layout.yaxis.title = chart.x_key || '';
-  }
 
   setTimeout(() => {
     const chartElement = document.getElementById(id);
@@ -168,7 +169,10 @@ function renderChart(chart) {
       Plotly.newPlot(id, [trace], layout, { responsive: true, displayModeBar: false });
     }
   }, 0);
-  return `<div id="${id}" class="chart-box"></div>`;
+  const height = isHorizontal
+    ? Math.min(760, Math.max(400, 280 + (chart.x_values || []).length * 20))
+    : 400;
+  return `<div id="${id}" class="chart-box" style="height:${height}px; min-height:${height}px; width:100%;"></div>`;
 }
 
 function renderAssistantResult(result) {
@@ -185,7 +189,7 @@ function renderAssistantResult(result) {
       ${chartHtml}
       ${tableHtml}
     </div>
-  `);
+  `, Boolean(result.chart));
 }
 
 function renderConversation(conversation) {
