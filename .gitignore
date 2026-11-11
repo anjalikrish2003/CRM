@@ -1,0 +1,30 @@
+# Secrets and local environment configuration
+.env
+.env.*
+!.env.example
+
+# Python environments and generated files
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local database files and backups
+crm.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Jupyter-generated files
+.ipynb_checkpoints/
+
+# Editor, operating system, and test artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.coverage
+htmlcov/

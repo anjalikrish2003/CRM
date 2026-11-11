@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM AI Analytics</title>
+    <link rel="stylesheet" href="/static/styles.css?v=2" />
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-wrap">
+          <div class="brand-badge">CRM</div>
+          <div>
+            <div class="brand-name">CRM AI</div>
+            <div class="brand-subtitle">Analytics Suite</div>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-btn active" type="button" data-view="chat">New Chat</button>
+          <button class="nav-btn" type="button" data-view="history">Chat History</button>
+          <button class="nav-btn" type="button" data-view="dataset">Dataset Info</button>
+          <button class="nav-btn" type="button" data-view="notebook">Notebook Insights</button>
+        </nav>
+
+        <div class="panel-card">
+          <div class="panel-header">Database Overview</div>
+          <div id="dbSummary" class="stat-list">
+            <div class="stat-row"><span>Tables</span><strong>--</strong></div>
+            <div class="stat-row"><span>Rows</span><strong>--</strong></div>
+            <div class="stat-row"><span>Status</span><strong>Live</strong></div>
+          </div>
+        </div>
+
+        <div class="panel-card minimal">
+          <div class="panel-header">Notebook Insights</div>
+          <ul class="insight-list">
+            <li>Schema-aware SQL workflow</li>
+            <li>Read-only query validation</li>
+            <li>Date-based and category charts</li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <div class="eyebrow">Connected dataset</div>
+            <h1>CRM AI Analytics</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="connection-pill">Database: online</span>
+            <button class="theme-btn" type="button">☀️</button>
+          </div>
+        </header>
+
+        <section class="welcome-card">
+          <div class="welcome-text">
+            <h2>Ask anything about your data.</h2>
+            <p>Explore customer trends, sales performance, product demand, and lead quality from the CRM data source.</p>
+          </div>
+          <div class="suggestion-chips" id="suggestionChips"></div>
+        </section>
+
+        <section class="chat-panel">
+          <div id="chatMessages" class="chat-thread" aria-live="polite"></div>
+          <div class="composer-wrap">
+            <textarea id="questionInput" rows="1" placeholder="Ask anything about your data..."></textarea>
+            <div class="composer-actions">
+              <button class="secondary-btn" id="clearChatBtn" type="button">Clear Chat</button>
+              <button class="primary-btn" id="sendBtn" type="button">Send</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="historyView" class="content-view" hidden>
+          <div class="view-heading">
+            <div>
+              <div class="eyebrow">Saved in this browser</div>
+              <h2>Chat History</h2>
+            </div>
+            <button class="secondary-btn" id="newChatBtn" type="button">New Chat</button>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </section>
+
+        <section id="datasetView" class="content-view" hidden>
+          <div class="view-heading">
+            <div>
+              <div class="eyebrow">Connected database</div>
+              <h2>Dataset Information</h2>
+            </div>
+            <span id="datasetName" class="connection-pill">Loading dataset…</span>
+          </div>
+          <div id="datasetContent"></div>
+        </section>
+
+        <section id="notebookView" class="content-view" hidden>
+          <div class="view-heading">
+            <div>
+              <div class="eyebrow">Analysis source</div>
+              <h2>Notebook Insights</h2>
+            </div>
+            <span class="connection-pill">crm.ipynb</span>
+          </div>
+          <div id="notebookContent" class="notebook-content">
+            <p class="muted">Loading notebook analysis…</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/app.js?v=2"></script>
+  </body>
+</html>
